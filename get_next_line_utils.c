@@ -6,7 +6,7 @@
 /*   By: leonmart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 12:41:20 by leonmart          #+#    #+#             */
-/*   Updated: 2025/03/13 12:52:21 by leonmart         ###   ########.fr       */
+/*   Updated: 2025/03/13 17:17:07 by leonmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ int	ft_strlen(const char	*str)
 
 int	ft_strlcpy(char *dst, const char *src, unsigned int dstsize)
 {
-	int	index;
-	int	src_len;
+	unsigned int	index;
+	unsigned int	src_len;
 
 	index = 0;
 	src_len = ft_strlen(src);

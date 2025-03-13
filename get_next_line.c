@@ -6,12 +6,12 @@
 /*   By: leonmart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 12:39:59 by leonmart          #+#    #+#             */
-/*   Updated: 2025/03/13 13:42:17 by leonmart         ###   ########.fr       */
+/*   Updated: 2025/03/13 18:55:05 by leonmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
+/*
 static char	*get_final_part_line(char *total_line)
 {
 	int		i_buffer;
@@ -40,7 +40,7 @@ static char	*get_final_part_line(char *total_line)
 	free(total_line);
 	return (final_line);
 }
-
+*/
 static char	*get_cleaned_line(char *buffer)
 {
 	int		index;
@@ -58,6 +58,20 @@ static char	*get_cleaned_line(char *buffer)
 	return (new_line);
 }
 
+/**
+ * @brief Concatenates the `buffer` and `partial_line` strings into a new string.
+ * 
+ * This function checks if either `buffer` or `partial_line` is NULL.
+ * If both are NULL,it returns NULL.
+ * Otherwise, it concatenates the two strings and frees the memory of 
+ * the `buffer` before returning the new concatenated string.
+ *
+ * @param buffer The first string to be concatenated.
+ * @param partial_line The second string to be concatenated.
+ * @return char* A new string that is the result of 
+ * concatenating `buffer` and `partial_line`.
+ * If the concatenation fails, it returns NULL.
+ */
 static char	*ft_strjoin_buffer_src(char	*buffer, char	*partial_line)
 {
 	char	*dest;
@@ -69,7 +83,21 @@ static char	*ft_strjoin_buffer_src(char	*buffer, char	*partial_line)
 	return (dest);
 }
 
-static char	*read_file(int fd, char *total_line)
+/**
+ * @brief Reads data from a file descriptor and accumulates it into `total_line`.
+ * 
+ * This function reads data in chunks from the file associated 
+ * with the given file descriptor (`fd`) and appends it to the `total_line`
+ * string.The function continues reading until it encounters a newline
+ * character or reaches the end of the file. If an error occurs, 
+ * it frees any allocated memory and returns NULL.
+ *
+ * @param fd The file descriptor from which to read data.
+ * @param total_line The accumulated appended strings.
+ * @return char* a pointer to the first position of total_line,
+ * or NULL in case of an error.
+ */
+static char	*read_line_buffer(int fd, char *total_line)
 {
 	int		char_to_read;
 	char	*buffer;
@@ -97,7 +125,7 @@ static char	*read_file(int fd, char *total_line)
 	free(buffer);
 	return (total_line);
 }
-
+/*
 char	*get_next_line(int fd)
 {
 	static char	*buffer;
@@ -109,7 +137,7 @@ char	*get_next_line(int fd)
 		buffer = NULL;
 		return (NULL);
 	}
-	buffer = read_file(fd, buffer);
+	buffer = read_line_buffer(fd, buffer);
 	if (!buffer)
 		return (NULL);
 	next_line = get_cleaned_line(buffer);
@@ -117,28 +145,35 @@ char	*get_next_line(int fd)
 	return (next_line);
 }
 
-/*
+# include <stdio.h>
 int	main(void)
 {
-	int		fd = open("text_00.txt", O_RDONLY);
+	int		fd = open("text_01.txt", O_RDONLY);
 	
 	int index_read;
 	char	*buffer;
 	char	*new_line;
 	char	*final_line;
+        
+	index_read = 0;
+	buffer = 0;
+	new_line = 0;
+	final_line = 0;
 
-	// 1º COPIAR LINEA COMPLETA HASTA L BUFFER QUE 
-	// INCLUYE SALTO LINEA -> READ_FILE()
-	index_read = read(fd, malloc(10 + 1), 10);
-	buffer = read_file(fd, buffer);
-	//printf("tamaño buffer -> %d \n", index_read);
-	//printf("Linea bruta -> %s<-final\n", buffer);
+	buffer = malloc(BUFFER_SIZE + 1);
+	// test 1-read file
 
-	// 2º CONSEGUIR LINEA NETA HASTA SALTO LINEA -> GIVE_LINE()
-	new_line = give_line(buffer);
-	//printf("Linea neta -> %s \n", new_line);
+	index_read = read(fd, buffer, BUFFER_SIZE);
+	printf("buffer sice -> %d \n", index_read);
+        printf("Buffer -> %s<-end\n", buffer);
+	buffer = read_line_buffer(fd, buffer);
+	printf("read complete buffer -> %s<-end\n", buffer);
 
-	// 3º CONSEGUIR FINAL LINEA TEXTO DESPUES DE SALTO LINEA
+	//test 2 - Get line until \n
+	new_line = get_cleaned_line(buffer);
+	printf("paragraph -> %s<-end\n", new_line);
+
+	// test 2- 3º CONSEGUIR FINAL LINEA TEXTO DESPUES DE SALTO LINEA
 	final_line = get_final_line(buffer);
 	printf("final linea -> %s \n", final_line);
 
@@ -168,4 +203,4 @@ int	main(void)
         return (1);
     }
 	return (0);
-} */
+}*/
