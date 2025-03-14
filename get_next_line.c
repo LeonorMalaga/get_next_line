@@ -6,20 +6,34 @@
 /*   By: leonmart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 12:39:59 by leonmart          #+#    #+#             */
-/*   Updated: 2025/03/13 18:55:05 by leonmart         ###   ########.fr       */
+/*   Updated: 2025/03/14 13:50:24 by leonmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-/*
-static char	*get_final_part_line(char *total_line)
+/**
+ * @brief char *get_final_part(*total_line)
+ * Extracts the portion of `total_line` that appears after the (`\n`)character.
+ *
+ * This function searches for the first occurrence of the newline
+ * character (`\n`) in the`total_line`.
+ * If a newline is found, it creates a new string (`final_line`) that contains
+ * everything after the newline, excluding the newline itself.
+ * If no newline is found, the function frees the memory allocated
+ * for `total_line` and returns NULL.
+ * 
+ * @param total_line The string to extract the final part from.
+ * @return char* A new string containing the part of `total_line`
+ * after the first newline, or NULL if there is no newline or an error occurs.
+ */
+static char	*get_final_part(char *total_line)
 {
 	int		i_buffer;
-	int		index_final_line;
+	int		i_final_line;
 	char	*final_line;
 
 	i_buffer = 0;
-	index_final_line = 0;
+	i_final_line = 0;
 	while (total_line[i_buffer] != '\0' && total_line[i_buffer] != '\n')
 		i_buffer++;
 	if (!total_line[i_buffer])
@@ -32,15 +46,28 @@ static char	*get_final_part_line(char *total_line)
 		return (NULL);
 	while (total_line[i_buffer] != '\0')
 	{
-		final_line[index_final_line] = total_line[i_buffer + 1];
+		final_line[i_final_line] = total_line[i_buffer + 1];
 		i_buffer++;
-		index_final_line++;
+		i_final_line++;
 	}
-	final_line[index_final_line] = '\0';
-	free(total_line);
+	final_line[i_final_line] = '\0';
+	free(total_line); 
 	return (final_line);
 }
-*/
+/**
+ * @brief char *get_cleaned_line(*buffer) 
+ * Cleans up a given buffer by extracting the part of the string up to the first newline.
+ *
+ * This function searches for the first occurrence of a newline (`\n`) in the `buffer`.
+ * It creates a new string, `new_line`, that contains all characters in `buffer` up to 
+ * and including the newline (if found). If no newline is found, the function copies 
+ * the entire buffer. The new string is allocated with memory, and if allocation fails,
+ * it returns NULL.
+ *
+ * @param buffer The string to be cleaned, possibly containing multiple lines.
+ * @return char* A newly allocated string containing the part of `buffer` up to the first newline, 
+ *               or NULL if memory allocation fails or the buffer is empty.
+ */
 static char	*get_cleaned_line(char *buffer)
 {
 	int		index;
@@ -59,7 +86,8 @@ static char	*get_cleaned_line(char *buffer)
 }
 
 /**
- * @brief Concatenates the `buffer` and `partial_line` strings into a new string.
+ * @brief char *ft_strjoin_buffer_src(*buffer, *partial_line) 
+ * Concatenates the `buffer` and `partial_line` strings into a new string.
  * 
  * This function checks if either `buffer` or `partial_line` is NULL.
  * If both are NULL,it returns NULL.
@@ -84,7 +112,8 @@ static char	*ft_strjoin_buffer_src(char	*buffer, char	*partial_line)
 }
 
 /**
- * @brief Reads data from a file descriptor and accumulates it into `total_line`.
+ * @brief char *read_line_buffer(fd, *total_line)
+ * Reads data from a file descriptor and accumulates it into `total_line`.
  * 
  * This function reads data in chunks from the file associated 
  * with the given file descriptor (`fd`) and appends it to the `total_line`
@@ -125,7 +154,7 @@ static char	*read_line_buffer(int fd, char *total_line)
 	free(buffer);
 	return (total_line);
 }
-/*
+
 char	*get_next_line(int fd)
 {
 	static char	*buffer;
@@ -141,28 +170,28 @@ char	*get_next_line(int fd)
 	if (!buffer)
 		return (NULL);
 	next_line = get_cleaned_line(buffer);
-	buffer = get_final_part_line(buffer);
+	buffer = get_final_part(buffer);
 	return (next_line);
 }
 
 # include <stdio.h>
 int	main(void)
 {
-	int		fd = open("text_01.txt", O_RDONLY);
+	int		fd = open("text_02.txt", O_RDONLY);
 	
 	int index_read;
 	char	*buffer;
 	char	*new_line;
-	char	*final_line;
+	char	*last_line;
         
 	index_read = 0;
 	buffer = 0;
 	new_line = 0;
-	final_line = 0;
+	last_line = 0;
 
 	buffer = malloc(BUFFER_SIZE + 1);
-	// test 1-read file
 
+	/*//test 1-read file
 	index_read = read(fd, buffer, BUFFER_SIZE);
 	printf("buffer sice -> %d \n", index_read);
         printf("Buffer -> %s<-end\n", buffer);
@@ -173,24 +202,24 @@ int	main(void)
 	new_line = get_cleaned_line(buffer);
 	printf("paragraph -> %s<-end\n", new_line);
 
-	// test 2- 3º CONSEGUIR FINAL LINEA TEXTO DESPUES DE SALTO LINEA
-	final_line = get_final_line(buffer);
-	printf("final linea -> %s \n", final_line);
+	//test 3- Get the rest of the text
+	last_line = get_final_part(buffer);
+	printf("last piece of text -> %s \n", last_line);
 
 	free(buffer);
 	free(new_line);
-	free(final_line);
-
-	// 4º TEST FUNCION GET_NEXT_LINE COMPLETA
+	free(last_line);
+	*/
+	//test 4-test get_next_Line
 	char	*next_line;
 	int     count_line;
 
 	count_line = 0;
 	if (fd == -1) 
-    {
-        printf("Error al abrir archivo");
-        return (1);
-    }
+        {
+        	printf("Error opening the file");
+        	return (1);
+        }
 	while ((next_line = get_next_line(fd)))
 	{
 		count_line++;
@@ -199,8 +228,8 @@ int	main(void)
 	}
 	if (close(fd) == -1)
 	{
-        printf("Error al cerrar archivo");
-        return (1);
-    }
+        	printf("Error closing the file");
+        	return (1);
+    	}
 	return (0);
-}*/
+}

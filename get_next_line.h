@@ -6,7 +6,7 @@
 /*   By: leonmart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 12:38:49 by leonmart          #+#    #+#             */
-/*   Updated: 2025/03/13 13:07:08 by leonmart         ###   ########.fr       */
+/*   Updated: 2025/03/14 13:10:22 by leonmart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>
+
+char		*get_next_line(int fd);
 /**
  * @brief ft_strlen(str) return the length of the given string
  * 
